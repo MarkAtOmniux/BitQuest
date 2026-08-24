@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <ecm.h>
 #include <future>
 #include <math.h>
@@ -41,6 +43,8 @@ public:
 	static sf::Vector2u getWindowSize();
 	static void setVsync(bool b);
 	static Scene* GetActiveScene();
+	static bool isKeyDown(sf::Keyboard::Key key);
+	static bool isMouseDown(sf::Mouse::Button button);
 
 
 private:

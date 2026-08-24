@@ -1,6 +1,8 @@
 #include "cmp_animation.h"
+#include <cmath>
 
 using namespace std;
+using namespace sf;
 
 void AnimationComponent::Animation(std::string a, sf::Vector2f b, sf::IntRect animUvRect, sf::Vector2u imagecount)
 {
@@ -32,6 +34,18 @@ void AnimationComponent::update(double dt) {
 
 	_sprite->setPosition(_parent->getPosition());
 	_sprite->setRotation(_parent->getRotation());
+
+	if (flashTime > 0.f)
+	{
+		flashTime -= static_cast<float>(dt);
+		const bool flashOn = (static_cast<int>(flashTime * 18.f) % 2) == 0;
+		_sprite->setColor(flashOn ? Color(255, 255, 255) : Color(255, 70, 70));
+		if (flashTime <= 0.f)
+		{
+			flashTime = 0.f;
+			_sprite->setColor(Color::White);
+		}
+	}
 
 
 	if (pause != true)
@@ -144,15 +158,25 @@ void AnimationComponent::Anim(double dt)
 
 }
 
+void AnimationComponent::flashHit()
+{
+	flashTime = 0.28f;
+}
+
 void AnimationComponent::attackAnim(double dt)
 {
 
 	totaltime += dt;
 
-
-	if (totaltime >= switchtime)
+	double frameTime = switchtime;
+	if (_parent->getTags().count("player"))
 	{
-		totaltime -= switchtime;
+		frameTime = 0.05;
+	}
+
+	if (totaltime >= frameTime)
+	{
+		totaltime -= frameTime;
 		attackImgNo++;
 
 		if (attackImgNo >= imagecount.x)

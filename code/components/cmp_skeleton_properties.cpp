@@ -1,6 +1,8 @@
 #include "cmp_skeleton_properties.h"
 #include "cmp_player_physics.h"
 #include "cmp_player_controller.h"
+#include "cmp_physics.h"
+#include "cmp_animation.h"
 #include "../code/GameState.h"
 #include "../code/Audio.h"
 #include <iostream>
@@ -29,14 +31,8 @@ void SkeletonPropertiesComponent::takeDamage(double h)
 		_soundHit.play();
 		_soundHit.setVolume(Audio::sfxVolume);
 
-		if (_player->getPosition().x < _parent->getPosition().x)
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(40.f, 0.f), true);
-		}
-		else
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(-40.f, 0.f), true);
-		}
+		_parent->get_components<PhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 15.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 		immortal = true;
 		_health = _health - h;
 
@@ -101,7 +97,7 @@ void SkeletonPropertiesComponent::checkContact(double dt)
 		{
 			if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 			{
-				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 6)
+				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 				{
 					this->takeDamage(ap->playerDamage);
 				}

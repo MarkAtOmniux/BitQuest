@@ -48,7 +48,7 @@ void UIComponent::update(double dt)
 		Engine::GetWindow().getView().getCenter().y });
 
 
-	if (Keyboard::isKeyPressed(Keyboard::Num1))
+	if (Engine::isKeyDown(Keyboard::Num1))
 	{
 		auto p = _player->get_components<AnimationComponent>()[0];
 		p->Animation("spritesheets/Bob_archer_spritesheetV2.png", Vector2f(0, 120), IntRect(0, 0, 240, 240), Vector2u(8, 8));
@@ -57,7 +57,7 @@ void UIComponent::update(double dt)
 		sword = false;
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::Num2))
+	if (Engine::isKeyDown(Keyboard::Num2))
 	{
 		auto p = _player->get_components<AnimationComponent>()[0];
 		_player->get_components<AnimationComponent>()[0]->Animation("spritesheets/Bob_spritesheet.png", Vector2f(0, 120), IntRect(0, 0, 240, 240), Vector2u(8, 8));

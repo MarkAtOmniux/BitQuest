@@ -30,14 +30,8 @@ void GoblinPropertiesComponent::takeDamage(double h)
 		immortal = true;
 		_health = _health - h;
 
-		if (_player->getPosition().x < _parent->getPosition().x)
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(50.f , 0.f),true);
-		}
-		else
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(-50.f, 0.f), true);
-		}
+		_parent->get_components<PhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 16.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 		this->checkHealth();
 	}
 }
@@ -92,7 +86,7 @@ void GoblinPropertiesComponent::checkContact(double dt)
 		{
 			if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 			{
-				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 5)
+				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 				{
 					this->takeDamage(ap->playerDamage);
 				}

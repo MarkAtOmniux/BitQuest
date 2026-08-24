@@ -1,5 +1,6 @@
 #include "Controls.h"
 #include "GameState.h"
+#include "engine.h"
 #include <stdexcept>
 
 using namespace std;
@@ -43,28 +44,28 @@ bool Controls::isPressed(const string& action)
 	// Space is always attack, never jump — ignore any remap that would swap them.
 	if (action == "Attack")
 	{
-		return Keyboard::isKeyPressed(Keyboard::Space);
+		return Engine::isKeyDown(Keyboard::Space);
 	}
 	if (action == "Jump")
 	{
-		return Keyboard::isKeyPressed(Keyboard::W)
-			|| Keyboard::isKeyPressed(Keyboard::Up);
+		return Engine::isKeyDown(Keyboard::W)
+			|| Engine::isKeyDown(Keyboard::Up);
 	}
 	if (action == "Block")
 	{
-		return Keyboard::isKeyPressed(Keyboard::C);
+		return Engine::isKeyDown(Keyboard::C);
 	}
 
-	if (Keyboard::isKeyPressed(GetKeyboardButton(action)))
+	if (Engine::isKeyDown(GetKeyboardButton(action)))
 	{
 		return true;
 	}
 
-	if (action == "MoveLeft" && Keyboard::isKeyPressed(Keyboard::Left))
+	if (action == "MoveLeft" && Engine::isKeyDown(Keyboard::Left))
 	{
 		return true;
 	}
-	if (action == "MoveRight" && Keyboard::isKeyPressed(Keyboard::Right))
+	if (action == "MoveRight" && Engine::isKeyDown(Keyboard::Right))
 	{
 		return true;
 	}

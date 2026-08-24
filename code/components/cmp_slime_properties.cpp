@@ -1,6 +1,8 @@
 #include "cmp_slime_properties.h"
 #include "cmp_player_physics.h"
 #include "cmp_player_controller.h"
+#include "cmp_physics.h"
+#include "cmp_animation.h"
 #include <ecm.h>
 #include <SFML/Audio.hpp>
 #include "../GameState.h"
@@ -32,6 +34,8 @@ void SlimePropertiesComponent::takeDamage(double h)
 
 		immortal = true;
 		this->_health = _health - h;
+		_parent->get_components<PhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 12.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 
 	}
 
@@ -87,7 +91,7 @@ void SlimePropertiesComponent::checkContact(double dt)
 		{
 			if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 			{
-				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 6)
+				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 				{
 					this->takeDamage(ap->playerDamage);
 				}

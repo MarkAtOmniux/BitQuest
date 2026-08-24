@@ -10,6 +10,7 @@
 #include "GameState.h"
 #include "SaveLoad.h"
 #include "Controls.h"
+#include "engine.h"
 
 using namespace sf;
 using namespace std;
@@ -82,8 +83,6 @@ void  Player_MoveLeftState::execute(Entity *owner, double dt) noexcept
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("idle");
 	}
-	p->impulse({ -9.0f , 0.0f });
-	p->dampen({ 1.7f , 1.0f });
 	
 	if (owner->get_components<PlayerControlerComponent>()[0]->getHealth() <= 0)
 	{
@@ -114,9 +113,6 @@ void  Player_MoveRightState::execute(Entity *owner, double dt) noexcept
 
 	auto p = owner->get_components<PlayerPhysicsComponent>()[0];
 	
-	p->impulse({ 9.0f , 0.0f });
-	p->dampen({ 1.7f , 1.0f });
-	
 	if (owner->get_components<PlayerControlerComponent>()[0]->getHealth() <= 0)
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("dead");
@@ -132,7 +128,7 @@ void  Player_MoveRightState::execute(Entity *owner, double dt) noexcept
 void  Player_AttackState::execute(Entity *owner, double dt) noexcept
 {
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || Controls::isPressed("Block"))
+	if (Engine::isMouseDown(sf::Mouse::Right) || Controls::isPressed("Block"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("block");
 	}
@@ -157,38 +153,40 @@ void  Player_AttackState::execute(Entity *owner, double dt) noexcept
 			me->changeState("idle");
 		}
 
+		if (Controls::isPressed("MoveLeft"))
+		{
+			me->changeState("walk_left");
+		}
+		if (Controls::isPressed("MoveRight"))
+		{
+			me->changeState("walk_right");
+		}
+
 	}
 	else
 	{
-		//reset attack animation when done
 		if (me_anim->attackImgNo >= 6)
 		{
-
-
 			me_anim->attackImgNo = 0;
 			me->changeState("idle");
 		}
 
-		//lock movement when attacking
-		if (me_anim->attackImgNo == 0)
+		if (Engine::isMouseDown(sf::Mouse::Left) || Controls::isPressed("Attack"))
 		{
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || Controls::isPressed("Attack"))
-			{
-				owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
-			}
+			owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
+		}
 
-			if (Controls::isPressed("MoveLeft"))
-			{
-				me->changeState("walk_left");
-			}
-			if (Controls::isPressed("MoveRight"))
-			{
-				me->changeState("walk_right");
-			}
-			if (Controls::isPressed("Jump"))
-			{
-				me->changeState("jump");
-			}
+		if (Controls::isPressed("MoveLeft"))
+		{
+			me->changeState("walk_left");
+		}
+		if (Controls::isPressed("MoveRight"))
+		{
+			me->changeState("walk_right");
+		}
+		if (Controls::isPressed("Jump"))
+		{
+			me->changeState("jump");
 		}
 		if (owner->get_components<PlayerControlerComponent>()[0]->getHealth() <= 0)
 		{

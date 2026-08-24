@@ -66,26 +66,31 @@ void  Goblin_ChaseState::execute(Entity *owner, double dt) noexcept
 
 	if (length(owner->getPosition() - _player->getPosition()) < 200.0f)
 	{
+		if (_player->getPosition().x > owner->getPosition().x)
+		{
+			owner->get_components<AnimationComponent>()[0]->faceRight = true;
+		}
+		if (_player->getPosition().x < owner->getPosition().x)
+		{
+			owner->get_components<AnimationComponent>()[0]->faceRight = false;
+		}
+		g->dampen({ 0.55f , 1.0f });
 		if (owner->get_components<GoblinPropertiesComponent>()[0]->canAttack())
 		{
 			sm->changeState("Attack");
 		}
 	}
-
-	if (_player->getPosition().x > owner->getPosition().x)
+	else if (_player->getPosition().x > owner->getPosition().x)
 	{
 		owner->get_components<AnimationComponent>()[0]->faceRight = true;
 		g->impulse({ 5.0f , 0.0f });
 		g->dampen({ 0.7f , 1.0f });
 	}
-
-	//follow left
-	if (_player->getPosition().x < owner->getPosition().x)
+	else if (_player->getPosition().x < owner->getPosition().x)
 	{
 		owner->get_components<AnimationComponent>()[0]->faceRight = false;
 		g->impulse({ -5.0f , 0.0f });
 		g->dampen({ 0.7f , 1.0f });
-
 	}
 	
 }
@@ -101,16 +106,13 @@ void  Goblin_AttackState::execute(Entity *owner, double dt) noexcept
 	if (_player->getPosition().x > owner->getPosition().x)
 	{
 		a->faceRight = true;
-		p->impulse({ 3.0f , 0.0f });
-		p->dampen({ 0.7f , 1.0f });
 	}
 
 	if (_player->getPosition().x < owner->getPosition().x)
 	{
 		a->faceRight = false;
-		p->impulse({ -3.0f , 0.0f });
-		p->dampen({ 0.7f , 1.0f });
 	}
+	p->dampen({ 0.85f , 1.0f });
 
 	if (a->attackImgNo >= 6)
 	{

@@ -4,6 +4,7 @@
 #include "cmp_player_controller.h"
 #include "cmp_orc_properties.h"
 #include "../code/Audio.h"
+#include "cmp_animation.h"
 
 using namespace std;
 using namespace sf;
@@ -27,14 +28,8 @@ void OrcPropertiesComponent::takeDamage(double h)
 		_soundHit.setVolume(Audio::sfxVolume);
 
 
-		if (_player->getPosition().x < _parent->getPosition().x)
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(40.f, 0.f), true);
-		}
-		else
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(-40.f, 0.f), true);
-		}
+		_parent->get_components<PhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 14.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 		immortal = true;
 		_health = _health - h;
 		this->checkHealth();
@@ -91,7 +86,7 @@ void OrcPropertiesComponent::checkContact(double dt)
 		{
 			if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 			{
-				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 6)
+				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 				{
 					this->takeDamage(ap->playerDamage);
 				}

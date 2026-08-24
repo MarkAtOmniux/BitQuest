@@ -2,6 +2,7 @@
 #include "cmp_player_physics.h"
 #include "cmp_physics.h"
 #include "cmp_player_controller.h"
+#include "cmp_animation.h"
 #include "../code/Audio.h"
 #include <iostream>
 
@@ -31,14 +32,8 @@ void GhostPropertiesComponent::takeDamage(double h)
 		_soundHit.setVolume(Audio::sfxVolume);
 
 		immortal = true;
-		if (_player->getPosition().x < _parent->getPosition().x)
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(20.f, 0.f), true);
-		}
-		else
-		{
-			_parent->get_components<PhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(-20.f, 0.f), true);
-		}
+		_parent->get_components<PhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 12.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 		_health = _health - h;
 		
 	}
@@ -94,7 +89,7 @@ void GhostPropertiesComponent::checkContact()
 			{
 				if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 				{
-					if (_player->get_components<AnimationComponent>()[0]->attackImgNo > 5)
+					if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 					{
 						this->takeDamage(ap->playerDamage);
 					}

@@ -18,7 +18,7 @@ void ShopComponent::update(double dt)
 {
 	if (length(_parent->getPosition() - _player->getPosition()) < 300.f)
 	{
-		if (Keyboard::isKeyPressed(Controls::GetKeyboardButton("Action")))
+		if (Engine::isKeyDown(Controls::GetKeyboardButton("Action")))
 		{
 
 			Vector2f currentPos = _player->getPosition();

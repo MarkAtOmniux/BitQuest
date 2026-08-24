@@ -83,6 +83,18 @@ void PhysicsComponent::dampen(const sf::Vector2f& i)
 
 }
 
+void PhysicsComponent::knockBackFrom(const sf::Vector2f& source, float speed)
+{
+	const float dir = (_parent->getPosition().x >= source.x) ? 1.f : -1.f;
+	b2Vec2 vel = _body->GetLinearVelocity();
+	vel.x = dir * speed;
+	if (vel.y < speed * 0.3f)
+	{
+		vel.y = speed * 0.3f;
+	}
+	_body->SetLinearVelocity(vel);
+}
+
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
 	b2Contact* bc;
 	return isTouching(pc, bc);

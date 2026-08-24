@@ -2,6 +2,7 @@
 #include "cmp_player_physics.h"
 #include "cmp_gavin_physics.h"
 #include "cmp_player_controller.h"
+#include "cmp_animation.h"
 #include <iostream>
 
 
@@ -19,14 +20,8 @@ void GavinPropertiesComponent::takeDamage(double h)
 	if (immortal == false)
 	{
 		immortal = true;
-		if (_player->getPosition().x < _parent->getPosition().x)
-		{
-			_parent->get_components<GavinPhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(20.f, 0.f), true);
-		}
-		else
-		{
-			_parent->get_components<GavinPhysicsComponent>()[0]->getFixture()->GetBody()->ApplyLinearImpulseToCenter(b2Vec2(-20.f, 0.f), true);
-		}
+		_parent->get_components<GavinPhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 10.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 		_health = _health - h;
 		
 	}
@@ -79,7 +74,7 @@ void GavinPropertiesComponent::checkContact()
 			{
 				if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 				{
-					if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 6)
+					if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 					{
 						takeDamage(ap->playerDamage);
 					}

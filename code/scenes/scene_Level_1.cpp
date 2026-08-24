@@ -113,7 +113,7 @@ void Level1Scene::Update(const double& dt) {
 
 	Scene::Update(dt);
 
-	if (Keyboard::isKeyPressed(Keyboard::Escape))
+	if (Engine::isKeyDown(Keyboard::Escape))
 	{
 
 		Vector2f currentPos = player->getPosition();

@@ -7,6 +7,8 @@
 #include "system_resources.h"
 #include "../code/SaveLoad.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <cstring>
 #include <chrono>
 #include <future>
 #include <vector>
@@ -39,6 +41,27 @@ static float loadingTime;
 static RenderWindow* _window;
 
 bool Engine::_fullscreen = false;
+
+static bool _keyDown[Keyboard::KeyCount] = {};
+static bool _mouseDown[Mouse::ButtonCount] = {};
+
+bool Engine::isKeyDown(Keyboard::Key key)
+{
+	if (key < 0 || key >= Keyboard::KeyCount)
+	{
+		return false;
+	}
+	return _keyDown[key];
+}
+
+bool Engine::isMouseDown(Mouse::Button button)
+{
+	if (button < 0 || button >= Mouse::ButtonCount)
+	{
+		return false;
+	}
+	return _mouseDown[button];
+}
 
 static Texture spritesheet;
 static Sprite goblin;
@@ -204,6 +227,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 	RenderWindow window;
 	window.create(VideoMode(width, height, 2), gameName);
 	window.setFramerateLimit(frameRate);
+	window.requestFocus();
 	//window.create(VideoMode(width, height), gameName, Style::Titlebar | Style::Close);
 	_gameName = gameName;
 	_window = &window;
@@ -223,6 +247,27 @@ void Engine::Start(unsigned int width, unsigned int height,
 			if (event.type == Event::Closed) {
 				window.close();
 			}
+			if (event.type == Event::LostFocus)
+			{
+				memset(_keyDown, 0, sizeof(_keyDown));
+				memset(_mouseDown, 0, sizeof(_mouseDown));
+			}
+			if (event.type == Event::KeyPressed && event.key.code >= 0 && event.key.code < Keyboard::KeyCount)
+			{
+				_keyDown[event.key.code] = true;
+			}
+			if (event.type == Event::KeyReleased && event.key.code >= 0 && event.key.code < Keyboard::KeyCount)
+			{
+				_keyDown[event.key.code] = false;
+			}
+			if (event.type == Event::MouseButtonPressed && event.mouseButton.button >= 0 && event.mouseButton.button < Mouse::ButtonCount)
+			{
+				_mouseDown[event.mouseButton.button] = true;
+			}
+			if (event.type == Event::MouseButtonReleased && event.mouseButton.button >= 0 && event.mouseButton.button < Mouse::ButtonCount)
+			{
+				_mouseDown[event.mouseButton.button] = false;
+			}
 			//Resize Window Mode
 			if (event.type == sf::Event::Resized)
 			{
@@ -238,6 +283,9 @@ void Engine::Start(unsigned int width, unsigned int height,
 					window.create(VideoMode(width, height), gameName, (_fullscreen ? Style::Fullscreen : Style::Resize | Style::Close));
 					window.setFramerateLimit(frameRate);
 				    _window = &window;
+					window.requestFocus();
+					memset(_keyDown, 0, sizeof(_keyDown));
+					memset(_mouseDown, 0, sizeof(_mouseDown));
 				}
 			}
 		}

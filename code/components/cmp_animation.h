@@ -25,9 +25,11 @@ public:
 	sf::Vector2u imagecount;
 	int attackImgNo;
 	bool animDone;
+	float flashTime = 0.f;
 
 	void Anim(double dt);
 	void attackAnim(double dt);
+	void flashHit();
 
 	void Animation(std::string a, sf::Vector2f b, sf::IntRect animUvRect, sf::Vector2u imagecount);
 

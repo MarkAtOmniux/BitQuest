@@ -1,6 +1,8 @@
 #include "cmp_troll_properties.h"
 #include "cmp_player_physics.h"
 #include "cmp_player_controller.h"
+#include "cmp_physics.h"
+#include "cmp_animation.h"
 #include <iostream>
 #include "../code/GameState.h"
 #include "../code/Audio.h"
@@ -32,6 +34,8 @@ void TrollPropertiesComponent::takeDamage(double h)
 		std::cout << _health << std::endl;
 		immortal = true;
 		this->_health = _health - h;
+		_parent->get_components<PhysicsComponent>()[0]->knockBackFrom(_player->getPosition(), 9.f);
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
 
 	}
 
@@ -92,7 +96,7 @@ void TrollPropertiesComponent::checkContact(double dt)
 		{
 			if (_player->get_components<StateMachineComponent>()[0]->currentState() == "Attack")
 			{
-				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 6)
+				if (_player->get_components<AnimationComponent>()[0]->attackImgNo >= 2)
 				{
 					this->takeDamage(ap->playerDamage);
 				}

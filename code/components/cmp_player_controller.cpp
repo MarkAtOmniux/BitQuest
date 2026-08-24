@@ -165,6 +165,8 @@ void PlayerControlerComponent::takeDamage(double d , double dt)
 
 		SaveLoad::health = _health;
 
+		_parent->get_components<AnimationComponent>()[0]->flashHit();
+
 		Audio::LoadAudio();
 
 		_bufferHit = *(Resources::get<SoundBuffer>("Bob_Sounds/Bob_Hit.wav"));

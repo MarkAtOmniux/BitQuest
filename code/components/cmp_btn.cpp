@@ -65,7 +65,7 @@ bool BtnComponent::isSelected()
 {
 	if (_isHighlighted)
 	{
-		if (Mouse::isButtonPressed(Mouse::Left))
+		if (Engine::isMouseDown(Mouse::Left))
 		{
 			_textCmp->getText().setFillColor(Color(240, 178, 0));
 			_underLine->getShape().setFillColor(Color(240, 178, 0));

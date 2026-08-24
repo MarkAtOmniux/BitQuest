@@ -19,7 +19,7 @@ void ChestComponent::update(double dt)
 {
 	if (length(_parent->getPosition() - _player->getPosition()) < 200.f)
 	{
-		if (Keyboard::isKeyPressed(Controls::GetKeyboardButton("Action")))
+		if (Engine::isKeyDown(Controls::GetKeyboardButton("Action")))
 		{
 			SaveLoad::coins = SaveLoad::coins + 50;
 
