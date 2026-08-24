@@ -3,7 +3,7 @@
 #include <ecm.h>
 #include "cmp_text.h"
 #include "cmp_animation.h"
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 class ChestComponent : public Component
 {

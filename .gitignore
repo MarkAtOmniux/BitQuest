@@ -330,3 +330,11 @@ __pycache__/
 
 
 # End of https://www.gitignore.io/api/c++,visualstudio
+
+# CMake build trees and packaged installers
+build/
+cmake-build-*/
+CMakeUserPresets.json
+*.dmg
+.DS_Store
+

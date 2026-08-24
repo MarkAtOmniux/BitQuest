@@ -2,7 +2,7 @@
 #include "../components/cmp_text.h"
 #include "../components/cmp_animation.h"
 #include "../components/cmp_sprite.h"
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "../GameState.h"
 #include "levelsystem.h"
 #include "../components/cmp_btn.h"

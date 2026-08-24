@@ -1,6 +1,6 @@
 #pragma once
 #include "engine.h"
-#include "SFML\Audio.hpp"
+#include "SFML/Audio.hpp"
 
 class MainMenuScene : public Scene {
 public:

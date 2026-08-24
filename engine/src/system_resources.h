@@ -3,6 +3,7 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <map>
 #include <memory>
 #include <string>
 

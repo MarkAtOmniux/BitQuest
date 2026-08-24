@@ -1,6 +1,6 @@
 #pragma once
 #include "components/cmp_state_machine.h"
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 //Player -----------------------------------------------------------------
 

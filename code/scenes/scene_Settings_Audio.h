@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine.h"
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 class SettingsAudioScene : public Scene {
 public:

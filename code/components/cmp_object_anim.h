@@ -27,6 +27,7 @@ public:
 
 	void Animation(std::string a, sf::Vector2f b, sf::IntRect animUvRect, sf::Vector2u imagecount);
 
+	ObjectAnimComponent() = delete;
 	explicit ObjectAnimComponent(Entity* p);
 	void update(double dt);
 	void render() override;
@@ -35,8 +36,6 @@ public:
 
 	template <typename... Targs> void setSprite(Targs... params) {
 		_sprite.reset(new sf::Sprite(params...));
-
-		ObjectAnimComponent() = delete;
 	}
 
 };

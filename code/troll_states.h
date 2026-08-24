@@ -1,6 +1,6 @@
 
 #pragma once
-#include "components\cmp_state_Machine.h"
+#include "components/cmp_state_Machine.h"
 
 class Troll_IdleState : public State
 {

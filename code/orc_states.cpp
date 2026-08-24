@@ -1,9 +1,9 @@
 #include "orc_states.h"
-#include "components\cmp_orc_properties.h"
-#include "components\cmp_physics.h"
-#include "components\cmp_animation.h"
+#include "components/cmp_orc_properties.h"
+#include "components/cmp_physics.h"
+#include "components/cmp_animation.h"
 #include "Prefabs.h"
-#include "components\cmp_hurt.h"
+#include "components/cmp_hurt.h"
 
 double totalTimeO = 2;
 double attackDelayO = 1;

@@ -1,8 +1,8 @@
 #include "troll_states.h"
-#include "components\cmp_troll_properties.h"
-#include "components\cmp_animation.h"
+#include "components/cmp_troll_properties.h"
+#include "components/cmp_animation.h"
 #include "Prefabs.h"
-#include "components\cmp_physics.h"
+#include "components/cmp_physics.h"
 
 
 double totalTimeT = 3;

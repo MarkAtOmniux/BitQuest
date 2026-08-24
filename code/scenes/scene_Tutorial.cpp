@@ -7,7 +7,7 @@
 #include "engine.h"
 #include "levelsystem.h"
 #include <iostream>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 using namespace sf;
 using namespace std;

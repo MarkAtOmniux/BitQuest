@@ -1,8 +1,8 @@
 #include "skeleton_states.h"
-#include "components\cmp_skeleton_properties.h"
-#include "components\cmp_physics.h"
-#include "components\cmp_animation.h"
-#include "components\cmp_hurt.h"
+#include "components/cmp_skeleton_properties.h"
+#include "components/cmp_physics.h"
+#include "components/cmp_animation.h"
+#include "components/cmp_hurt.h"
 #include "Prefabs.h"
 
 void  Skeleton_IdleState::execute(Entity *owner, double dt) noexcept

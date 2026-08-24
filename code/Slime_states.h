@@ -1,7 +1,7 @@
 #pragma once
-#include "components\cmp_state_Machine.h"
+#include "components/cmp_state_Machine.h"
 #include "ecm.h"
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 class Slime_IdleState : public State
 {

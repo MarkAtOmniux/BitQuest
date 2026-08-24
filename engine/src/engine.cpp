@@ -6,12 +6,27 @@
 #include "system_Renderer.h"
 #include "system_resources.h"
 #include "../code/SaveLoad.h"
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <chrono>
 #include <future>
 #include <vector>
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
+#include <unistd.h>
+#include <limits.h>
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#include <stdlib.h>
+#endif
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+#endif
 
 using namespace sf;
 using namespace std;
@@ -25,17 +40,17 @@ static RenderWindow* _window;
 
 bool Engine::_fullscreen = false;
 
-Texture spritesheet;
-Sprite goblin;
+static Texture spritesheet;
+static Sprite goblin;
 
 
 
 
-float switchtime;
-IntRect uvRect = IntRect(240, 0, 240, 240);
-sf::Vector2u currentimage;
-float totalTime;
-sf::Vector2u imagecount(8, 8);
+static float switchtime;
+static IntRect uvRect = IntRect(240, 0, 240, 240);
+static sf::Vector2u currentimage;
+static float totalTime;
+static sf::Vector2u imagecount(8, 8);
 
 void Loading_Load()
 {
@@ -138,8 +153,54 @@ void Engine::Render(RenderWindow& window) {
 }
 
 
+void Engine::UseExecutableWorkingDirectory() {
+#ifdef _WIN32
+	char path[MAX_PATH];
+	DWORD n = GetModuleFileNameA(nullptr, path, MAX_PATH);
+	if (n == 0 || n >= MAX_PATH) {
+		return;
+	}
+	std::string dir(path);
+	const auto slash = dir.find_last_of("\\/");
+	if (slash != std::string::npos) {
+		dir.resize(slash);
+		SetCurrentDirectoryA(dir.c_str());
+	}
+#elif defined(__APPLE__)
+	char path[PATH_MAX];
+	uint32_t size = sizeof(path);
+	if (_NSGetExecutablePath(path, &size) != 0) {
+		return;
+	}
+	char resolved[PATH_MAX];
+	if (realpath(path, resolved) == nullptr) {
+		return;
+	}
+	std::string dir(resolved);
+	const auto slash = dir.find_last_of('/');
+	if (slash != std::string::npos) {
+		dir.resize(slash);
+		chdir(dir.c_str());
+	}
+#else
+	char path[PATH_MAX];
+	const ssize_t n = readlink("/proc/self/exe", path, sizeof(path) - 1);
+	if (n <= 0) {
+		return;
+	}
+	path[n] = '\0';
+	std::string dir(path);
+	const auto slash = dir.find_last_of('/');
+	if (slash != std::string::npos) {
+		dir.resize(slash);
+		chdir(dir.c_str());
+	}
+#endif
+}
+
 void Engine::Start(unsigned int width, unsigned int height,
 	const std::string& gameName, Scene* scn, unsigned int frameRate) {
+	UseExecutableWorkingDirectory();
 	RenderWindow window;
 	window.create(VideoMode(width, height, 2), gameName);
 	window.setFramerateLimit(frameRate);

@@ -3,7 +3,7 @@
 #include "engine.h"
 #include "../components/cmp_text.h"
 #include <ecm.h>
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 class ShopScene : public Scene {
 public:

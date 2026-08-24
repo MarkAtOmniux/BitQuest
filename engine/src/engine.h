@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML\Graphics\RenderWindow.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <ecm.h>
 #include <future>
 #include <math.h>
@@ -34,6 +34,8 @@ public:
 	Engine() = delete;
 	static void Start(unsigned int width, unsigned int height,
 	const std::string& gameName, Scene* scn, unsigned int frameRate);
+	// Make relative "res/..." paths work when launched from Finder or Explorer.
+	static void UseExecutableWorkingDirectory();
 	static void ChangeScene(Scene*);
 	static sf::RenderWindow& GetWindow();
 	static sf::Vector2u getWindowSize();

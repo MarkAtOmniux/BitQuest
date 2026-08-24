@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ecm.h>
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "cmp_text.h"
 #include "cmp_animation.h"
 

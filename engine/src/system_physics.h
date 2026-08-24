@@ -2,6 +2,7 @@
 
 #include "Box2D/Box2D.h"
 #include <SFML/System/Vector2.hpp>
+#include <memory>
 
 namespace Physics
 {

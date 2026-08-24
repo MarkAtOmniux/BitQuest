@@ -1,7 +1,7 @@
 #pragma once
 #include <ecm.h>
 #include "engine.h"
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 class GoblinPropertiesComponent : public Component
 {

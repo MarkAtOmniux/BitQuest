@@ -1,7 +1,7 @@
 #include "scene_Settings_Gameplay.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "../GameState.h"
 #include "../code/Prefabs.h"
 #include "../components/cmp_btn.h"

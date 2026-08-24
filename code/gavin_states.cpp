@@ -1,6 +1,6 @@
 #include "gavin_states.h"
 #include "prefabs.h"
-#include "components\cmp_gavin_properties.h"
+#include "components/cmp_gavin_properties.h"
 #include "components/cmp_sprite.h"
 #include "components/cmp_gavin_physics.h"
 #include "components/cmp_animation.h"
@@ -10,11 +10,11 @@
 using namespace sf;
 using namespace std;
 
-double attackDelay= 2;
-double totalTime = 2;
-double deathDelay = 5;
-double chaseRange = 1000;
-double attackRange = 700;
+static double attackDelay= 2;
+static double totalTime = 2;
+static double deathDelay = 5;
+static double chaseRange = 1000;
+static double attackRange = 700;
 
 // Gavin ----------------------------------------------------------------------
 

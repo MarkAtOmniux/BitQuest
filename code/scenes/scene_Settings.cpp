@@ -4,7 +4,7 @@
 #include "../components/cmp_btn.h"
 #include "../code/Prefabs.h"
 #include "levelsystem.h"
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "../GameState.h"
 
 using namespace std;

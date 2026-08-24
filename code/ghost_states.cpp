@@ -1,6 +1,6 @@
 #include "ghost_states.h"
 #include "prefabs.h"
-#include "components\cmp_ghost_properties.h"
+#include "components/cmp_ghost_properties.h"
 #include "components/cmp_sprite.h"
 #include "components/cmp_physics.h"
 #include "components/cmp_animation.h"

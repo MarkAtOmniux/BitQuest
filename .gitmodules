@@ -1,6 +1,7 @@
 [submodule "lib/sfml"]
 	path = lib/sfml
 	url = https://github.com/SFML/SFML.git
+	branch = 2.6.2
 [submodule "lib/b2d"]
 	path = lib/b2d
 	url = https://github.com/dooglz/box2D.git

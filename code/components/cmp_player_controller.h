@@ -4,7 +4,7 @@
 #include "cmp_player_physics.h"
 #include "cmp_gavin_physics.h"
 #include "cmp_animation.h"
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 
 class PlayerControlerComponent : public Component
 {

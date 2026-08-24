@@ -4,7 +4,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_btn.h"
 #include "../code/Prefabs.h"
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "../GameState.h"
 #include "../code/Audio.h"
 #include "levelsystem.h"

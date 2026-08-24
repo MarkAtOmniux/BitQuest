@@ -1,0 +1,38 @@
+name: Package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Configure universal macOS build
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBITQUEST_UNIVERSAL=ON
+      - name: Package
+        run: cmake --build build --target package_game -j
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BitQuest-macOS
+          path: build/dist/BitQuest-*
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - name: Package
+        run: cmake --build build --config Release --target package_game --parallel
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BitQuest-windows
+          path: build/dist/BitQuest-*

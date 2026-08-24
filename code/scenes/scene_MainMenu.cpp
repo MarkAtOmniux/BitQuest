@@ -9,7 +9,7 @@
 #include "engine.h"
 #include "levelsystem.h"
 #include "../code/Audio.h"
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <math.h>

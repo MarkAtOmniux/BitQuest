@@ -7,34 +7,34 @@
 #include "Player_states.h"
 #include "goblin_states.h"
 #include "orc_states.h"
-#include "components\cmp_player_bullet.h"
+#include "components/cmp_player_bullet.h"
 #include "troll_states.h"
 #include "skeleton_states.h"
 #include "gavin_states.h"
 #include "SaveLoad.h"
 
 #include"ghost_states.h"
-#include "components\cmp_ghost_properties.h"
-#include "components\cmp_slime_bullet.h"
-#include "components\cmp_slime_properties.h"
+#include "components/cmp_ghost_properties.h"
+#include "components/cmp_slime_bullet.h"
+#include "components/cmp_slime_properties.h"
 #include "Slime_states.h"
-#include "components\cmp_goblin_properties.h"
-#include "components\cmp_orc_properties.h"
-#include "components\cmp_troll_properties.h"
-#include "components\cmp_skeleton_properties.h"
-#include "components\cmp_chest.h"
+#include "components/cmp_goblin_properties.h"
+#include "components/cmp_orc_properties.h"
+#include "components/cmp_troll_properties.h"
+#include "components/cmp_skeleton_properties.h"
+#include "components/cmp_chest.h"
 
-#include "components\cmp_gavin_properties.h"
-#include "components\cmp_bullet.h"
-#include "components\cmp_hurt.h"
+#include "components/cmp_gavin_properties.h"
+#include "components/cmp_bullet.h"
+#include "components/cmp_hurt.h"
 
-#include"components\cmp_object_anim.h"
-#include "components\cmp_state_Machine.h"
-#include "components\cmp_btn.h"
-#include "components\cmp_animation.h"
-#include "components\cmp_player_controller.h"
-#include "components\cmp_UI.h"
-#include "components\cmp_shop.h"
+#include"components/cmp_object_anim.h"
+#include "components/cmp_state_Machine.h"
+#include "components/cmp_btn.h"
+#include "components/cmp_animation.h"
+#include "components/cmp_player_controller.h"
+#include "components/cmp_UI.h"
+#include "components/cmp_shop.h"
 
 using namespace std;
 using namespace sf;
@@ -187,10 +187,10 @@ vector<shared_ptr<Entity>> makeEnemies()
 	}
 
 	auto orcs = ls::findTiles(ls::ENEMY_ORC);
-	for (auto or : orcs)
+	for (auto orcTile : orcs)
 	{
 		auto orc = Engine::GetActiveScene()->makeEntity();
-		orc->setPosition(ls::getTilePosition(or));
+		orc->setPosition(ls::getTilePosition(orcTile));
 		orc->addTag("orc");
 
 		auto p = orc->addComponent<PhysicsComponent>(true, Vector2f(100, 160));

@@ -1,5 +1,5 @@
 #pragma once
-#include "components\cmp_state_Machine.h"
+#include "components/cmp_state_Machine.h"
 
 class Orc_IdleState : public State
 {
