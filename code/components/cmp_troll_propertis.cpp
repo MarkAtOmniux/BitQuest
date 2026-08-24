@@ -66,6 +66,11 @@ void TrollPropertiesComponent::update(double dt)
 			immortal = false;
 		}
 	}
+
+	if (attackPause > 0.f)
+	{
+		attackPause -= static_cast<float>(dt);
+	}
 }
 
 void TrollPropertiesComponent::render()

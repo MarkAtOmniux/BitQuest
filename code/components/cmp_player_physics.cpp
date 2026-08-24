@@ -1,9 +1,18 @@
 #include "cmp_player_physics.h"
+#include "../code/Controls.h"
+#include <cmath>
 
 
 using namespace std;
 using namespace sf;
 using namespace Physics;
+
+namespace {
+	// Old jump was clamped to 800 px/s under 1x gravity. Scale takeoff by
+	// sqrt(gravity) so peak height stays the same while air time drops.
+	constexpr float kJumpGravityScale = 2.f;
+	constexpr float kOldJumpSpeed = 800.f;
+}
 
 bool PlayerPhysicsComponent::isGrounded() const {
 	auto touch = getTouching();
@@ -39,17 +48,24 @@ void PlayerPhysicsComponent::update(double dt) {
 
 
 
-	// Handle Jump
-	if (Keyboard::isKeyPressed(Keyboard::Space))
+	// Jump is W / Up only. Space is attack and must never apply this impulse.
+	if (Controls::isPressed("Jump") && !Keyboard::isKeyPressed(Keyboard::Space))
 	{
 		_grounded = isGrounded();
 		if (_grounded) {
-			//me->setJumping();
-			setVelocity(Vector2f(getVelocity().x, 300.f));
+			const float jumpSpeed = kOldJumpSpeed * std::sqrt(kJumpGravityScale);
+			setVelocity(Vector2f(getVelocity().x, jumpSpeed));
 			teleport(Vector2f(pos.x, pos.y - 5.0f));
-			impulse(Vector2f(0, -100.f));
-
 		}
+	}
+
+	if (getVelocity().y < 0.f)
+	{
+		_body->SetGravityScale(kJumpGravityScale * 1.35f);
+	}
+	else
+	{
+		_body->SetGravityScale(kJumpGravityScale);
 	}
 
 	//Are we in air?
@@ -80,14 +96,14 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 	const Vector2f& size)
 	: PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
-	_maxVelocity = Vector2f(400.f, 800.f);
-	//_fixture->SetDensity(0.2);
+	_maxVelocity = Vector2f(400.f, kOldJumpSpeed * std::sqrt(kJumpGravityScale) + 1.f);
 	_groundspeed = 200.f;
 	_grounded = false;
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
-	//Bullet items have higher-res collision detection
 	_body->SetBullet(true);
+	_body->SetGravityScale(kJumpGravityScale);
+	setRestitution(0.f);
 
 }
 

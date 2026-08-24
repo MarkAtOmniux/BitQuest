@@ -38,14 +38,14 @@ void SettingsGameplayScene::Load()
 	_btn_ControlsLeft = makeButton("Left", Vector2f(40, 40));
 	_btn_ControlsLeft->setPosition(Vector2f(Engine::GetWindow().getSize().x / 8 + 150 , 300.f));
 	_btns.push_back(_btn_ControlsLeft);
-	_controlsBtns[_btn_ControlsLeft] = "Left";
+	_controlsBtns[_btn_ControlsLeft] = "MoveLeft";
 
 
 	_btn_ControlsRight.reset();
 	_btn_ControlsRight = makeButton("Right", Vector2f(40, 40));
 	_btn_ControlsRight->setPosition(Vector2f(Engine::GetWindow().getSize().x / 8 + 300, 300.f));
 	_btns.push_back(_btn_ControlsRight);
-	_controlsBtns[_btn_ControlsRight] = "Right";
+	_controlsBtns[_btn_ControlsRight] = "MoveRight";
 
 
 	_btn_ControlsJump.reset();

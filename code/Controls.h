@@ -14,4 +14,5 @@ public:
 	static void initialise();
 	static sf::Keyboard::Key GetKeyboardButton(std::string action);
 	static void SetKeyboardButton(std::string action, sf::Keyboard::Key key);
+	static bool isPressed(const std::string& action);
 };

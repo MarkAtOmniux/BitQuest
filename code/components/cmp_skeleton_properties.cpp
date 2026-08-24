@@ -75,6 +75,11 @@ void SkeletonPropertiesComponent::update(double dt)
 			immortal = false;
 		}
 	}
+
+	if (attackPause > 0.f)
+	{
+		attackPause -= static_cast<float>(dt);
+	}
 }
 
 void SkeletonPropertiesComponent::render()

@@ -9,6 +9,8 @@ protected:
 	float _health = 4;
 	float damageDelay = 0.2;
 	float totalTime = 0;
+	float attackPause = 0.f;
+	float attackPauseDuration = 1.4f;
 public:
 
 	sf::SoundBuffer _bufferHit;
@@ -27,4 +29,6 @@ public:
 	void update(double dt);
 	void render() override;
 	void checkContact(double dt);
+	bool canAttack() const { return attackPause <= 0.f; }
+	void beginAttackPause() { attackPause = attackPauseDuration; }
 };

@@ -65,6 +65,11 @@ void OrcPropertiesComponent::update(double dt)
 			immortal = false;
 		}
 	}
+
+	if (attackPause > 0.f)
+	{
+		attackPause -= static_cast<float>(dt);
+	}
 }
 
 void OrcPropertiesComponent::render()

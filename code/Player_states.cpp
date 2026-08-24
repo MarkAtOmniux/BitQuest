@@ -20,12 +20,12 @@ void  Player_IdleState::execute(Entity *owner, double dt) noexcept
 	auto me = owner->get_components<StateMachineComponent>()[0]; 
 	auto p = owner->get_components<PlayerPhysicsComponent>()[0];
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Attack")))
+	if (Controls::isPressed("Attack"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
 	}
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Block")))
+	if (Controls::isPressed("Block"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("block");
 	}
@@ -36,19 +36,19 @@ void  Player_IdleState::execute(Entity *owner, double dt) noexcept
 		p->dampen({ 0.7f , 0 });
 	}
 	
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("MoveLeft")))
+	if (Controls::isPressed("MoveLeft"))
 	{
 		me->changeState("walk_left");
 	}
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("MoveRight")))
+	if (Controls::isPressed("MoveRight"))
 	{
 		me->changeState("walk_right");
 	}
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Attack")))
+	if (Controls::isPressed("Attack"))
 	{
 		me->changeState("Attack");
 	}
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Jump")))
+	if (Controls::isPressed("Jump"))
 	{
 		me->changeState("jump");
 	}
@@ -65,12 +65,12 @@ void  Player_MoveLeftState::execute(Entity *owner, double dt) noexcept
 	owner->get_components<AnimationComponent>()[0]->faceRight = false;
 
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Block")))
+	if (Controls::isPressed("Block"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("block");
 	}
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Attack")))
+	if (Controls::isPressed("Attack"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
 	}
@@ -78,7 +78,7 @@ void  Player_MoveLeftState::execute(Entity *owner, double dt) noexcept
 	auto p = owner->get_components<PlayerPhysicsComponent>()[0];
 	
 
-	if (!Keyboard::isKeyPressed(Controls::GetKeyboardButton("MoveLeft")))
+	if (!Controls::isPressed("MoveLeft"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("idle");
 	}
@@ -97,17 +97,17 @@ void  Player_MoveRightState::execute(Entity *owner, double dt) noexcept
 	owner->get_components<AnimationComponent>()[0]->faceRight = true;
 
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Block")))
+	if (Controls::isPressed("Block"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("block");
 	}
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Attack")))
+	if (Controls::isPressed("Attack"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
 	}
 
-	if (!Keyboard::isKeyPressed(Controls::GetKeyboardButton("MoveRight")))
+	if (!Controls::isPressed("MoveRight"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("idle");
 	}
@@ -122,7 +122,7 @@ void  Player_MoveRightState::execute(Entity *owner, double dt) noexcept
 		owner->get_components<StateMachineComponent>()[0]->changeState("dead");
 	}
 	
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Attack")))
+	if (Controls::isPressed("Attack"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
 	}
@@ -132,7 +132,7 @@ void  Player_MoveRightState::execute(Entity *owner, double dt) noexcept
 void  Player_AttackState::execute(Entity *owner, double dt) noexcept
 {
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) || Controls::isPressed("Block"))
 	{
 		owner->get_components<StateMachineComponent>()[0]->changeState("block");
 	}
@@ -172,20 +172,20 @@ void  Player_AttackState::execute(Entity *owner, double dt) noexcept
 		//lock movement when attacking
 		if (me_anim->attackImgNo == 0)
 		{
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || Controls::isPressed("Attack"))
 			{
 				owner->get_components<StateMachineComponent>()[0]->changeState("Attack");
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			if (Controls::isPressed("MoveLeft"))
 			{
 				me->changeState("walk_left");
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			if (Controls::isPressed("MoveRight"))
 			{
 				me->changeState("walk_right");
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			if (Controls::isPressed("Jump"))
 			{
 				me->changeState("jump");
 			}
@@ -217,7 +217,7 @@ void  Player_BlockState::execute(Entity *owner, double dt) noexcept
 	me_anim->pause = true;
 	owner->get_components<PlayerControlerComponent>()[0]->immortal = true;
 
-	if(!sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Block")))
+	if(!Controls::isPressed("Block"))
 	{
 		me_anim->pause = false;
 		owner->get_components<StateMachineComponent>()[0]->changeState("idle");

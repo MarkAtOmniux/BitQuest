@@ -2,6 +2,7 @@
 #include "cmp_physics.h"
 #include "cmp_player_physics.h"
 #include "cmp_player_controller.h"
+#include "cmp_animation.h"
 #include "../code/Audio.h"
 
 using namespace std;
@@ -67,6 +68,11 @@ void GoblinPropertiesComponent::update(double dt)
 			immortal = false;
 		}
 	}
+
+	if (attackPause > 0.f)
+	{
+		attackPause -= static_cast<float>(dt);
+	}
 }
 void GoblinPropertiesComponent::render()
 {
@@ -91,7 +97,7 @@ void GoblinPropertiesComponent::checkContact(double dt)
 					this->takeDamage(ap->playerDamage);
 				}
 			}
-			else
+			if (_parent->get_components<AnimationComponent>()[0]->attackImgNo >= 5)
 			{
 				ap->takeDamage(goblinDamage, dt);
 			}

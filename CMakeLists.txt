@@ -111,6 +111,31 @@ add_custom_command(TARGET BITQUEST POST_BUILD
     "${PROJECT_SOURCE_DIR}/res" "$<TARGET_FILE_DIR:BITQUEST>/res"
 )
 
+# Remove the pre-bundle binary so `./BITQUEST` cannot launch an old Space=jump build.
+add_custom_command(TARGET BITQUEST POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E rm -f
+    "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/BITQUEST"
+    "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/BITQUEST.exe"
+)
+
+if(APPLE)
+  set(BITQUEST_FRAMEWORKS "$<TARGET_BUNDLE_DIR:BITQUEST>/Contents/Frameworks")
+  add_custom_command(TARGET BITQUEST POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${BITQUEST_FRAMEWORKS}"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${PROJECT_SOURCE_DIR}/lib/sfml/extlibs/libs-osx/Frameworks"
+      "${BITQUEST_FRAMEWORKS}"
+    COMMENT "Bundling SFML frameworks into BitQuest.app"
+  )
+  foreach(sfml_target sfml-system sfml-window sfml-graphics sfml-audio)
+    add_custom_command(TARGET BITQUEST POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy
+        "$<TARGET_FILE:${sfml_target}>"
+        "${BITQUEST_FRAMEWORKS}/lib${sfml_target}.2.6.dylib"
+    )
+  endforeach()
+endif()
+
 set_target_properties(BITQUEST PROPERTIES
   VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:BITQUEST>"
 )

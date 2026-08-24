@@ -34,7 +34,10 @@ void  Skeleton_IdleState::execute(Entity *owner, double dt) noexcept
 	{
 		if (length(owner->getPosition() - _player->getPosition()) < 200.0f)
 		{
-			sm->changeState("Attack");
+			if (owner->get_components<SkeletonPropertiesComponent>()[0]->canAttack())
+			{
+				sm->changeState("Attack");
+			}
 		}
 		else if (length(owner->getPosition() - _player->getPosition()) < 800.0f)
 		{
@@ -58,7 +61,10 @@ void  Skeleton_ChaseState::execute(Entity *owner, double dt) noexcept
 
 	if (length(owner->getPosition() - _player->getPosition()) < 200.0f)
 	{
-		sm->changeState("Attack");
+		if (owner->get_components<SkeletonPropertiesComponent>()[0]->canAttack())
+		{
+			sm->changeState("Attack");
+		}
 	}
 
 	if (_player->getPosition().x > owner->getPosition().x)
@@ -83,39 +89,39 @@ void  Skeleton_ChaseState::execute(Entity *owner, double dt) noexcept
 void Skeleton_AttackState::execute(Entity *owner, double dt) noexcept
 {
 	auto p = owner->get_components<PhysicsComponent>()[0];
-
+	auto a = owner->get_components<AnimationComponent>()[0];
+	auto sm = owner->get_components<StateMachineComponent>()[0];
+	auto props = owner->get_components<SkeletonPropertiesComponent>()[0];
 
 	if (_player->getPosition().x > owner->getPosition().x)
 	{
-		owner->get_components<AnimationComponent>()[0]->faceRight = true;
+		a->faceRight = true;
 		p->impulse({ 2.0f , 0.0f });
 		p->dampen({ 0.7f , 0.0f });
 	}
 
-	//follow left
 	if (_player->getPosition().x < owner->getPosition().x)
 	{
-		owner->get_components<AnimationComponent>()[0]->faceRight = false;
+		a->faceRight = false;
 		p->impulse({ -2.0f , 0.0f });
 		p->dampen({ 0.7f , 0.0f });
-
 	}
 
-
-	if (owner->get_components<SkeletonPropertiesComponent>()[0]->getHealth() <= 0)
+	if (a->attackImgNo >= 6)
 	{
-		owner->get_components<StateMachineComponent>()[0]->changeState("dead");
+		a->attackImgNo = 0;
+		props->beginAttackPause();
+		sm->changeState("idle");
+	}
+
+	if (props->getHealth() <= 0)
+	{
+		sm->changeState("dead");
 	}
 
 	if (length(owner->getPosition() - _player->getPosition()) > 200.0f)
 	{
-		auto sm = owner->get_components<StateMachineComponent>()[0];
 		sm->changeState("chase");
-	}
-
-	if (owner->get_components<SkeletonPropertiesComponent>()[0]->getHealth() <= 0)
-	{
-		owner->get_components<StateMachineComponent>()[0]->changeState("dead");
 	}
 }
 

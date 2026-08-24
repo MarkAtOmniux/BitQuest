@@ -61,7 +61,7 @@ void PlayerControlerComponent::update(double dt)
 		sword = false;
 	}
 
-	if (sf::Keyboard::isKeyPressed(Controls::GetKeyboardButton("Ham")))
+	if (Controls::isPressed("Ham"))
 	{
 		sleep(milliseconds(100));
 		if (SaveLoad::hams > 0)
