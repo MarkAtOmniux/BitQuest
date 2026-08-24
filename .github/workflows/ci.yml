@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
+jobs:
+  macos:
+    name: macOS
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBITQUEST_UNIVERSAL=ON
+
+      - name: Build and package
+        run: cmake --build build --target package_game -j
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BitQuest-macOS
+          path: build/dist/BitQuest-*
+          if-no-files-found: error
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure
+        run: cmake -S . -B build
+
+      - name: Build and package
+        run: cmake --build build --config Release --target package_game --parallel
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BitQuest-windows
+          path: build/dist/BitQuest-*
+          if-no-files-found: error
+
+  release:
+    name: GitHub Release
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/'))
+    needs: [macos, windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Publish latest playable build
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag --repo "${GITHUB_REPOSITORY}" || true
+          gh release create latest \
+            artifacts/BitQuest-macOS/* \
+            artifacts/BitQuest-windows/* \
+            --title "Latest build" \
+            --notes "Playable BitQuest build from the latest commit on master.
+
+          Windows: download BitQuest-windows.zip, unzip, and run BitQuest/BitQuest.exe.
+
+          macOS: download the .dmg (or the .zip), open BitQuest.app, and click the window once so it has keyboard focus. If macOS blocks the app, right-click it and choose Open." \
+            --repo "${GITHUB_REPOSITORY}"
+
+      - name: Publish tagged release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            artifacts/BitQuest-macOS/* \
+            artifacts/BitQuest-windows/* \
+            --generate-notes \
+            --repo "${GITHUB_REPOSITORY}"

@@ -18,7 +18,46 @@ Mark Barton
 https://ske66.github.io/BitQuest/
 
 
-[![Build status](https://ci.appveyor.com/api/projects/status/s6j4yt4dhe4ct4dm?svg=true)](https://ci.appveyor.com/project/ske66/bitquest)
+[![CI](https://github.com/MarkAtOmniux/BitQuest/actions/workflows/ci.yml/badge.svg)](https://github.com/MarkAtOmniux/BitQuest/actions/workflows/ci.yml)
+
+## Download
+
+Playable builds are on the [Releases](https://github.com/MarkAtOmniux/BitQuest/releases/latest) page. Each successful push to `master` updates that download.
+
+- **Windows:** download `BitQuest-windows.zip`, unzip it, and run `BitQuest/BitQuest.exe`.
+- **macOS:** download the `.dmg` (or the `.zip`), open `BitQuest.app`, and click the game window once so it has keyboard focus. If macOS says the app cannot be opened, right-click it and choose **Open**.
+
+Do not use the zip files under a workflow run on the Actions tab unless you are debugging CI — those expire and are harder to find.
+
+## How to play
+
+You play as Bob, exploring a dungeon for treasure and fighting monsters on the way to **Gavin, The Pretty Terrible Wizard**.
+
+From the main menu choose **New Game** or **Resume Game**. Click a menu button to select it.
+
+Your goal is to survive the dungeon, collect gold, and defeat Gavin. Enemies include slimes, goblins, skeletons, orcs, and trolls — they pause and plant before attacking, so you can punish a swing or back off.
+
+- Stand next to a **chest** and press **E** to open it for gold.
+- Stand next to the **shop** and press **E** to buy arrows, ham, and upgrades.
+- **Ham** fully restores health. You start with two; eat one with **H**.
+- **1** switches to the bow (uses arrows). **2** switches to the sword.
+- **Escape** pauses and saves. **F11** toggles fullscreen.
+
+If you die, the game over screen returns you to the menu. Resume Game loads your last save.
+
+### Controls
+
+| Action | Keys |
+| --- | --- |
+| Move | A / D or Left / Right |
+| Jump | W or Up |
+| Attack | Space or Left click |
+| Block | C or Right click |
+| Interact | E |
+| Eat ham | H |
+| Bow / Sword | 1 / 2 |
+| Pause / save | Escape |
+| Fullscreen | F11 |
 
 ## Build and run
 
@@ -62,17 +101,4 @@ Run `build\bin\Release\BitQuest.exe` (Visual Studio multi-config) or `build\bin\
 cmake --build build --target package_game -j
 ```
 
-Output goes to `build/dist/` (`.dmg` on macOS, `.zip` on Windows).
-
-## Controls
-
-| Action | Keys |
-| --- | --- |
-| Move | A / D or Left / Right |
-| Jump | W or Up |
-| Attack | Space or Left click |
-| Block | C or Right click |
-| Interact | E |
-| Sword / Bow | 2 / 1 |
-| Pause | Escape |
-
+Output goes to `build/dist/` (`.dmg` on macOS, `.zip` on Windows). Pushing a `v*` tag also publishes a versioned GitHub Release.

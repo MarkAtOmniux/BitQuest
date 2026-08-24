@@ -164,7 +164,7 @@ endif()
 
 # One-command packager: cmake --build build --target package_game
 # macOS universal (Intel + Apple Silicon): configure with -DBITQUEST_UNIVERSAL=ON
-# Windows: run the same target on Windows, or use .github/workflows/package.yml
+# Windows: run the same target on Windows, or use .github/workflows/ci.yml
 if(APPLE)
   set(BITQUEST_BUNDLE_DIR_ARG "$<TARGET_BUNDLE_DIR:BITQUEST>")
 else()
